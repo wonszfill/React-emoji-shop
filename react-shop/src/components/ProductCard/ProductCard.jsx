@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { CSSTransition } from 'react-transition-group'
 import { useContext, useState } from "react";
 import { CartContext } from "../../App";
+import { centsToFullDotCents } from "../../helpers/helpers";
 
 const StyledProductCard = styled.div`
     margin: 1rem 0;
@@ -84,12 +85,9 @@ export const ProductCard = ({ product }) => {
     }
 
     const handleAddToCart = () => {
-        cartContextObject.setCartContent(oldContent => [...oldContent, product]);
+        cartContextObject.setCartContent(oldContent => [product, ...oldContent]);
         console.log(cartContextObject.cartContent);
     }
-
-    const priceWhole = Math.floor(product.price.value / 100);
-    const priceCents = product.price.value % 100 < 10 ? `0${product.price.value % 100 }` : product.price.value % 100 ;
 
     return ( 
         <StyledProductCard>
@@ -108,11 +106,11 @@ export const ProductCard = ({ product }) => {
                 </AddToCartButton>
             </ProductHeader>
             <CSSTransition
-                        timeout={300}
-                        classNames="item"
-                        in={isDetailedView}
-                        unmountOnExit
-                    >
+                timeout={300}
+                classNames="item"
+                in={isDetailedView}
+                unmountOnExit
+            >
                 <div>
                     <DetailedView>
                         <DetailedProduct>
@@ -120,7 +118,7 @@ export const ProductCard = ({ product }) => {
                         </DetailedProduct>
                         <DetailedPrice>
                             <DetailedPriceValue>
-                                {priceWhole}.{priceCents}
+                                {centsToFullDotCents(product.price.value)}
                             </DetailedPriceValue>
                             <DetailedPriceCurrency>
                                 {product.price.currency}

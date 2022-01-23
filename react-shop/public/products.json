@@ -9,6 +9,15 @@
       "item": "ʕ•ᴥ•ʔ"
     },
     {
+      "id": 10,
+      "name": "Kitten with small eye",
+      "price": {
+        "value": 200,
+        "currency": "EUR"
+      },
+      "item": "(=◕･◕=)"
+    },
+    {
       "id": 2,
       "name": "Magic",
       "price": {

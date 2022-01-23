@@ -40,3 +40,23 @@ code {
   max-height: 0;
   transition: max-height 300ms, opacity 200ms; 
 }
+
+
+.cart {
+  width:100%;
+  overflow: hidden;
+}
+.cart-enter {
+  opacity: 0;
+}
+.cart-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;  
+}
+.cart-exit {
+  opacity: 1;
+}
+.cart-exit-active {
+  opacity: 0;
+  transition: opacity 300ms; 
+}
