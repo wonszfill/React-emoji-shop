@@ -1,6 +1,9 @@
 import styled from 'styled-components'
 import { AppHeader } from './components/Header/Header';
 import { ProductsView } from './components/ProductsView/ProductsView';
+import { createContext, useState } from 'react';
+
+export const CartContext = createContext({});
 
 const AppWrapper = styled.div`
 	min-height:100vh;
@@ -10,15 +13,25 @@ const AppWrapper = styled.div`
 `
 
 function App() {
-  return (
-    <AppWrapper>
-      	<AppHeader />
-		<ProductsView />
-		<footer>
 
-		</footer>
-    </AppWrapper>
-  );
+	const [cartContent, setCartContent] = useState([]);
+
+	const cartContextObject = {
+		cartContent: cartContent,
+		setCartContent: setCartContent
+	}
+
+  	return (
+		<AppWrapper>
+			<CartContext.Provider value={cartContextObject}>
+				<AppHeader />
+				<ProductsView />
+				<footer>
+
+				</footer>
+			</CartContext.Provider>
+		</AppWrapper>
+  	);
 }
 
 export default App;

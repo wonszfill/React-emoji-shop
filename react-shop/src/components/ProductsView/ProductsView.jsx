@@ -18,8 +18,6 @@ export const ProductsView = () => {
         .then(data => setProducts(data))
     }, [])
 
-    console.log(products);
-
     return ( 
         <ProductsWrapper>
             <TransitionGroup>

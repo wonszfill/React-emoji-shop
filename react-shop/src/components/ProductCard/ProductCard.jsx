@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { CSSTransition } from 'react-transition-group'
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { CartContext } from "../../App";
 
 const StyledProductCard = styled.div`
-    padding: 2rem;
     margin: 1rem 0;
     display: flex;
     flex-direction: column;
@@ -16,6 +16,10 @@ const StyledProductCard = styled.div`
 
 const ProductHeader = styled.div`
     display: flex;
+    align-items: center;
+    padding: 2rem;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    box-shadow: 1px 0 7px 1px rgba(0,0,0,0.2);
 `
 
 const ProductTitle = styled.div`
@@ -33,6 +37,7 @@ const ShowDetailsButton = styled.div`
 
 const DetailedView = styled.div`
     margin-top: 2rem;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
 `
@@ -60,12 +65,27 @@ const DetailedPriceCurrency = styled.span`
     margin-right: 0.5rem;
 `
 
+const AddToCartButton = styled.div`
+    margin-left: 2rem;
+    background-color: orange;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 5px 0px rgba(0,0,0,0.2);
+    cursor: pointer;
+`
+
 export const ProductCard = ({ product }) => {
 
     const [isDetailedView, setIsDetailedView] = useState(false);
+    const cartContextObject = useContext(CartContext);
 
     const toggleDetailedView = () => {
         setIsDetailedView(oldState => !oldState)
+    }
+
+    const handleAddToCart = () => {
+        cartContextObject.setCartContent(oldContent => [...oldContent, product]);
+        console.log(cartContextObject.cartContent);
     }
 
     const priceWhole = Math.floor(product.price.value / 100);
@@ -83,6 +103,9 @@ export const ProductCard = ({ product }) => {
                 >
                     Show details
                 </ShowDetailsButton>
+                <AddToCartButton onClick={handleAddToCart}>
+                    Add to cart
+                </AddToCartButton>
             </ProductHeader>
             <CSSTransition
                         timeout={300}

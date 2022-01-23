@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { useContext } from "react";
+import { CartContext } from "../../App";
 
 const Header = styled.header`
 	padding: 2rem 4rem;
@@ -44,6 +46,9 @@ const CartButton = styled.div`
 `
 
 export const AppHeader = () => {
+
+    const cartContextObject = useContext(CartContext);
+
     return ( 
         <Header>
             <HeaderLeft>
@@ -54,7 +59,7 @@ export const AppHeader = () => {
             </HeaderCenter>
             <HeaderRight>
                 <CartButton>
-                🛒 0
+                🛒 {cartContextObject.cartContent.length}
                 </CartButton>
             
             </HeaderRight>

@@ -21,7 +21,6 @@ code {
 .item {
   width:100%;
   overflow: hidden;
-  padding: 0;
 }
 .item-enter {
   opacity: 0;
@@ -29,12 +28,12 @@ code {
 }
 .item-enter-active {
   opacity: 1;
-  max-height: 15rem;
+  max-height: 20rem;
   transition: max-height 300ms, opacity 300ms;  
 }
 .item-exit {
   opacity: 1;
-  max-height: 15rem;
+  max-height: 20rem;
 }
 .item-exit-active {
   opacity: 0;
