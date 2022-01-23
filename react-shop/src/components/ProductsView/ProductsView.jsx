@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ProductCard } from "../ProductCard/ProductCard";
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 const ProductsWrapper = styled.div`
     width: 100%;
@@ -21,7 +22,18 @@ export const ProductsView = () => {
 
     return ( 
         <ProductsWrapper>
-            { products.map(product => <ProductCard product={product} />) }
+            <TransitionGroup>
+                { products.map(product => (
+                    <CSSTransition
+                        key={product.id}
+                        timeout={300}
+                        classNames="item"
+                    >
+                        <ProductCard product={product} />
+                    </CSSTransition>
+                    )
+                )}
+            </TransitionGroup>
         </ProductsWrapper>
     );
 }

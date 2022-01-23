@@ -17,3 +17,27 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.item {
+  width:100%;
+  overflow: hidden;
+  padding: 0;
+}
+.item-enter {
+  opacity: 0;
+  max-height: 0;
+}
+.item-enter-active {
+  opacity: 1;
+  max-height: 15rem;
+  transition: max-height 300ms, opacity 300ms;  
+}
+.item-exit {
+  opacity: 1;
+  max-height: 15rem;
+}
+.item-exit-active {
+  opacity: 0;
+  max-height: 0;
+  transition: max-height 300ms, opacity 200ms; 
+}
