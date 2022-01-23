@@ -27,7 +27,7 @@ const ShowDetailsButton = styled.div`
     background-color: lightgreen;
     padding: 1rem 2rem;
     border-radius: 0.5rem;
-    box-shadow: 0 0 5px 0px rgba(0,0,0,0.2);
+    box-shadow: ${props => props.isDetailedView ? "inset" : ""} 0 0 5px 0px rgba(0,0,0,0.2);
     cursor: pointer;
 `
 
@@ -78,6 +78,7 @@ export const ProductCard = ({ product }) => {
                     {product.name}
                 </ProductTitle>
                 <ShowDetailsButton
+                    isDetailedView={isDetailedView}
                     onClick={toggleDetailedView}
                 >
                     Show details
