@@ -1,24 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import styled from 'styled-components'
+import { AppHeader } from './components/Header/Header';
+
+const AppWrapper = styled.div`
+	min-height:100vh;
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+`
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppWrapper>
+      	<AppHeader />
+		<body>
+
+		</body>
+		<footer>
+
+		</footer>
+    </AppWrapper>
   );
 }
 
