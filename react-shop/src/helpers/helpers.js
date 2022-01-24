@@ -4,3 +4,13 @@ export function centsToFullDotCents(cents) {
 
     return `${priceWhole}.${priceCents}`
 }
+
+export function orderListToGroupedList(orderList) {
+    return orderList.reduce((acc, item) => {
+        if (!(item.id in acc)) {
+            return {...acc,  [item.id]: {...item, quantity: 1}}
+        }
+        const updatedQuantity = acc[item.id].quantity + 1
+        return {...acc, [item.id]: {...item, quantity: updatedQuantity}}
+    }, {})
+}
