@@ -1,4 +1,4 @@
 export const PATHS = {
     summary: "/summary",
-    payment: "/payment"
+    checkout: "/checkout"
 }

@@ -9,6 +9,7 @@ import {
 	Route
   } from "react-router-dom";
 import { PATHS } from './PATHS';
+import { CheckoutView } from './components/CheckoutView/CheckoutView';
 
 export const CartContext = createContext({});
 
@@ -36,7 +37,8 @@ function App() {
 				
 					<Routes>
 						<Route index path="/" element={<ProductsView />} />
-						<Route index path={PATHS.summary} element={<OrderSummaryView />} />
+						<Route path={PATHS.summary} element={<OrderSummaryView />} />
+						<Route path={PATHS.checkout} element={<CheckoutView />} />
 					</Routes>
 				
 				<footer>

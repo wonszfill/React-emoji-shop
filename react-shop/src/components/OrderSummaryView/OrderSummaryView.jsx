@@ -3,6 +3,7 @@ import { CartContext } from "../../App";
 import { useContext, useState } from "react";
 import { centsToFullDotCents, orderListToGroupedList } from "../../helpers/helpers";
 import { PALLETE } from "../../colors/PALLETE";
+import { useNavigate } from "react-router-dom";
 
 const Summary = styled.div`
     width: 100%;
@@ -94,8 +95,16 @@ const SummaryItemTotalPrice = styled.div`
 const SummaryTotalOrder = styled.div`
     margin-top: 2rem;
     padding: 1rem 4rem;
+    display: flex;
+    align-items: center;
     border-radius: 1rem;
     background: ${PALLETE.action};
+    cursor: pointer;
+    transition: transform 1s, opacity 1s;
+    &:hover{
+        transform: scale(1.1);
+        opacity: 0.9;
+    }
 `
 
 const SummaryTotalCurrency = styled.div`
@@ -120,6 +129,13 @@ export const OrderSummaryView = () => {
     }, {})
     const summaryTotalCostArray = Object.entries(summaryTotalCostObject); 
     
+    let navigate = useNavigate();
+
+    const handleCheckout = () => {
+        cartContextObject.setCartContent([]);
+        navigate("/checkout", {replace: true});
+    }
+
     return (
         <Summary>
             <SummaryWrapper>
@@ -161,7 +177,7 @@ export const OrderSummaryView = () => {
                         </SummaryTotalCurrency>
                     ))}
                     
-                    <SummaryTotalOrder>
+                    <SummaryTotalOrder onClick={handleCheckout}>
                         Order
                     </SummaryTotalOrder>
                 </SummaryTotal>

@@ -7,6 +7,107 @@ import { PALLETE } from "../../colors/PALLETE.js";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { PATHS } from "../../PATHS";
 
+export const AppHeader = () => {
+
+    const [isCartVisible, setIsCartVisible] = useState(false);
+    const [isBackToShopVisible, setIsBackToShopVisible] = useState(false);
+
+    const cartContextObject = useContext(CartContext);
+
+    const toggleCartVisibility = () => {
+        setIsCartVisible(oldState => !oldState);
+    }
+
+    let navigate = useNavigate();
+
+    const handleBackToShop = () => {
+        navigate("/", {replace: true});
+    }
+
+    let location = useLocation();
+    
+    useEffect(()=> {
+        if (location.pathname === PATHS.summary) {
+            setIsCartVisible(false);
+            setIsBackToShopVisible(true);
+            return
+        }
+        setIsBackToShopVisible(false);
+    }, [location])
+
+    // sums for all currencies
+    const cartTotalCostObject = cartContextObject.cartContent.reduce((acc, item) => {
+        if (!(item.price.currency in acc)) {
+            return {...acc, [item.price.currency]: item.price.value}
+        }
+        const updatedPrice = acc[item.price.currency] + item.price.value
+        return {...acc, [item.price.currency]: updatedPrice}
+    }, {})
+    const cartTotalCostArray = Object.entries(cartTotalCostObject); 
+
+    return ( 
+        <Header>
+            <HeaderLeft>
+
+            </HeaderLeft>
+            <HeaderCenter to="/">
+                React Emoji Shop
+            </HeaderCenter>
+            <HeaderRight>
+                {!isBackToShopVisible && <CartButton onClick={toggleCartVisibility}>
+                🛒 {cartContextObject.cartContent.length}
+                </CartButton>}
+                {isBackToShopVisible && <CartButton onClick={handleBackToShop}>
+                Back to shop
+                </CartButton>}
+                <CSSTransition
+                    timeout={300}
+                    classNames="cart"
+                    in={isCartVisible}
+                    unmountOnExit
+                >
+                    <Cart>
+                        <CartTitle>
+                            Cart
+                        </CartTitle>
+                        <CartContext.Consumer>
+                            { cartContextObject => cartContextObject.cartContent.map(item => (
+                                    <CartItem>
+                                        <CartItemName>
+                                            {item.name}
+                                        </CartItemName>
+                                        <span>
+                                            {centsToFullDotCents(item.price.value)}
+                                            {item.price.currency}
+                                        </span>
+                                    </CartItem>
+                                )   
+                            )}
+                        </CartContext.Consumer>
+                        <CartSummary>
+                            <CartSummaryTitle>
+                                Total
+                            </CartSummaryTitle>
+                            {cartTotalCostArray.map(currencyObj => (
+                                    <CartSummaryCurrency key={currencyObj[0]}>
+                                        {centsToFullDotCents(currencyObj[1])}
+                                        {currencyObj[0]}
+                                    </CartSummaryCurrency>
+                                )
+                            )}
+                            <Link to="/summary">
+                                <CartOrderSummaryButton>
+                                    Go to summary
+                                </CartOrderSummaryButton>
+                            </Link>
+                        </CartSummary>
+                    </Cart>
+                </CSSTransition>
+            </HeaderRight>
+        </Header>
+     );
+}
+
 const Header = styled.header`
 	padding: 2rem 4rem;
     width: 100%;
@@ -28,10 +129,12 @@ const HeaderLeft = styled.div`
     align-items: center;
 `
 
-const HeaderCenter = styled.div`
+const HeaderCenter = styled(Link)`
     display: flex;
     justify-content: center;
     align-items: center;
+    color: inherit;
+    text-decoration: none;
 `
 
 const HeaderRight = styled.div`
@@ -155,104 +258,3 @@ const CartOrderSummaryButton = styled.div`
     justify-content: center;
     background: ${PALLETE.action};
 `
-
-export const AppHeader = () => {
-
-    const [isCartVisible, setIsCartVisible] = useState(false);
-    const [isBackToShopVisible, setIsBackToShopVisible] = useState(false);
-
-    const cartContextObject = useContext(CartContext);
-
-    const toggleCartVisibility = () => {
-        setIsCartVisible(oldState => !oldState);
-    }
-
-    let navigate = useNavigate();
-
-    const handleBackToShop = () => {
-        navigate("/", {replace: true});
-    }
-
-    let location = useLocation();
-    
-    useEffect(()=> {
-        if (location.pathname === PATHS.summary) {
-            setIsCartVisible(false);
-            setIsBackToShopVisible(true);
-            return
-        }
-        setIsBackToShopVisible(false);
-    }, [location])
-
-    // sums for all currencies
-    const cartTotalCostObject = cartContextObject.cartContent.reduce((acc, item) => {
-        if (!(item.price.currency in acc)) {
-            return {...acc, [item.price.currency]: item.price.value}
-        }
-        const updatedPrice = acc[item.price.currency] + item.price.value
-        return {...acc, [item.price.currency]: updatedPrice}
-    }, {})
-    const cartTotalCostArray = Object.entries(cartTotalCostObject); 
-
-    return ( 
-        <Header>
-            <HeaderLeft>
-
-            </HeaderLeft>
-            <HeaderCenter>
-                React Emoji Shop
-            </HeaderCenter>
-            <HeaderRight>
-                {!isBackToShopVisible && <CartButton onClick={toggleCartVisibility}>
-                🛒 {cartContextObject.cartContent.length}
-                </CartButton>}
-                {isBackToShopVisible && <CartButton onClick={handleBackToShop}>
-                Back to shop
-                </CartButton>}
-                <CSSTransition
-                    timeout={300}
-                    classNames="cart"
-                    in={isCartVisible}
-                    unmountOnExit
-                >
-                    <Cart>
-                        <CartTitle>
-                            Cart
-                        </CartTitle>
-                        <CartContext.Consumer>
-                            { cartContextObject => cartContextObject.cartContent.map(item => (
-                                    <CartItem>
-                                        <CartItemName>
-                                            {item.name}
-                                        </CartItemName>
-                                        <span>
-                                            {centsToFullDotCents(item.price.value)}
-                                            {item.price.currency}
-                                        </span>
-                                    </CartItem>
-                                )   
-                            )}
-                        </CartContext.Consumer>
-                        <CartSummary>
-                            <CartSummaryTitle>
-                                Total
-                            </CartSummaryTitle>
-                            {cartTotalCostArray.map(currencyObj => (
-                                    <CartSummaryCurrency key={currencyObj[0]}>
-                                        {centsToFullDotCents(currencyObj[1])}
-                                        {currencyObj[0]}
-                                    </CartSummaryCurrency>
-                                )
-                            )}
-                            <Link to="/summary">
-                                <CartOrderSummaryButton>
-                                    Go to summary
-                                </CartOrderSummaryButton>
-                            </Link>
-                        </CartSummary>
-                    </Cart>
-                </CSSTransition>
-            </HeaderRight>
-        </Header>
-     );
-}
